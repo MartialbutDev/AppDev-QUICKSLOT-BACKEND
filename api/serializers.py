@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import User, Category, Gadget, Rental, Favorite, Notification
+from .models import User, Category, Gadget, Rental, Favorite, Notification, ActivityLog
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,3 +68,12 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = ['id', 'title', 'message', 'notification_type', 'read', 'sent_date']
+
+# ============ ADD THIS NEW SERIALIZER ============
+
+class ActivityLogSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.username', read_only=True)
+    
+    class Meta:
+        model = ActivityLog
+        fields = ['id', 'user', 'user_name', 'action', 'details', 'timestamp']
