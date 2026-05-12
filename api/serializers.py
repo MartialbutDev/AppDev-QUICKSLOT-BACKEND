@@ -45,8 +45,9 @@ class GadgetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gadget
         fields = ['id', 'name', 'category', 'category_name', 'brand', 'model',
-                  'description', 'specs', 'daily_rate', 'condition', 'status', 'times_rented']
+                  'description', 'specs', 'daily_rate', 'condition', 'status', 'times_rented', 'image_url']
 
+# ============ FIXED RENTAL SERIALIZER ============
 class RentalSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.username', read_only=True)
     gadget_name = serializers.CharField(source='gadget.name', read_only=True)
@@ -56,6 +57,14 @@ class RentalSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'user_name', 'gadget', 'gadget_name', 'rent_date',
                   'expected_return', 'actual_return', 'status', 'total_amount',
                   'late_fee', 'created_at']
+        read_only_fields = ['id', 'user', 'user_name', 'gadget_name', 'status', 
+                           'late_fee', 'actual_return', 'created_at']
+        extra_kwargs = {
+            'gadget': {'required': True},
+            'rent_date': {'required': True},
+            'expected_return': {'required': True},
+            'total_amount': {'required': True},
+        }
 
 class FavoriteSerializer(serializers.ModelSerializer):
     gadget_details = GadgetSerializer(source='gadget', read_only=True)
@@ -68,8 +77,6 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = ['id', 'title', 'message', 'notification_type', 'read', 'sent_date']
-
-# ============ ADD THIS NEW SERIALIZER ============
 
 class ActivityLogSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.username', read_only=True)

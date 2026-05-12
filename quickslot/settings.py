@@ -69,7 +69,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Manila'  # Changed from UTC to Philippines time
 USE_I18N = True
 USE_TZ = True
 
@@ -92,7 +92,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
+    'PAGE_SIZE': 100,
 }
 
 # JWT Settings
@@ -103,3 +103,26 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+# ============ MEDIA FILES (User Uploaded Images) ============
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# ============ EXAM WEEK CONFIGURATION ============
+# Define Exam Week dates for the academic year
+# Format: (month, start_day, end_day, description)
+EXAM_WEEKS = [
+    # 1st Semester
+    {'month': 9, 'start_day': 15, 'end_day': 21, 'name': 'Midterms (1st Sem)', 'priority': 10},
+    {'month': 11, 'start_day': 15, 'end_day': 21, 'name': 'Finals (1st Sem)', 'priority': 10},
+    
+    # 2nd Semester
+    {'month': 2, 'start_day': 15, 'end_day': 21, 'name': 'Midterms (2nd Sem)', 'priority': 10},
+    {'month': 4, 'start_day': 15, 'end_day': 21, 'name': 'Finals (2nd Sem)', 'priority': 10},
+]
+
+# Normal day priority (used when not in exam week)
+NORMAL_DAY_PRIORITY = 7
+
+# Exam week priority (used during exam weeks)
+EXAM_WEEK_PRIORITY = 10
